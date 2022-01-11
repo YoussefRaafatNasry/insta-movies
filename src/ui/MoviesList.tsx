@@ -1,18 +1,45 @@
 import React from "react";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 
-import { FlatList, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { Movie } from "../domain/models/Movie";
 import { IMoviesRepository } from "../domain/repositories/MoviesRepository";
 import { MovieCard } from "./MovieCard";
+import { Page } from "../domain/models/Page";
 
 interface IMoviesListProps {
   repository: IMoviesRepository;
 }
 
 export const MoviesList: React.FC<IMoviesListProps> = (props) => {
-  // TODO: Use pagination
-  const { data, error } = useSWR("movies", props.repository.getAll);
+  const keyPrefix = "movies?page=";
+  const pageToKey = (page: number) => `${keyPrefix}${page}`;
+  const keyToPage = (key: string) => parseInt(key.replace(keyPrefix, ""));
+
+  const { data, error, size, setSize } = useSWRInfinite(
+    (page: number, previousData: Page<Movie>) => {
+      const nextPage = page + 1;
+      const hasMore = previousData && nextPage > previousData?.totalPages;
+      return hasMore ? null : pageToKey(nextPage);
+    },
+    (key) => {
+      const page = keyToPage(key);
+      return props.repository.getAll(page);
+    },
+    {
+      initialSize: 1,
+      revalidateFirstPage: false,
+    }
+  );
+
+  const lastPage = data?.slice(-1)[0];
+  const isLoadingInitialData = !data && !error;
+  const hasMore = lastPage && lastPage?.page < lastPage?.totalPages;
+  const isLoadingMore = !isLoadingInitialData && size > 1 && hasMore;
+  const movies = data?.reduce<Movie[]>(
+    (acc, page) => acc.concat(page.items),
+    []
+  );
 
   if (error)
     return (
@@ -22,18 +49,25 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
     );
 
   // TODO: Use shimmer skeleton
-  if (!data)
+  if (isLoadingInitialData)
     return (
       <View>
-        <Text>Loading...</Text>
+        <ActivityIndicator color="blue" size="large" />
       </View>
     );
 
   return (
     <View>
       <FlatList<Movie>
-        data={data?.items}
+        data={movies}
         renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+        onEndReachedThreshold={0.1}
+        onEndReached={() => setSize(size + 1)}
+        ListFooterComponent={
+          !isLoadingMore ? null : (
+            <ActivityIndicator color="blue" size="large" />
+          )
+        }
       />
     </View>
   );
