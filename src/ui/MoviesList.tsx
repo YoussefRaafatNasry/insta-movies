@@ -1,13 +1,18 @@
 import React from "react";
 import useSWR from "swr";
-import { FlatList, View, Text } from "react-native";
-import { Movie } from "../data/Movie";
-import { fetchMovies } from "../data/MoviesRepository";
+
+import { FlatList, Text, View } from "react-native";
+import { Movie } from "../domain/models/Movie";
+import { IMoviesRepository } from "../domain/repositories/MoviesRepository";
 import { MovieCard } from "./MovieCard";
 
-export const MoviesList: React.FC = () => {
+interface IMoviesListProps {
+  repository: IMoviesRepository;
+}
+
+export const MoviesList: React.FC<IMoviesListProps> = (props) => {
   // TODO: Use pagination
-  const { data, error } = useSWR("movies", fetchMovies);
+  const { data, error } = useSWR("movies", props.repository.getAll);
 
   if (error)
     return (
