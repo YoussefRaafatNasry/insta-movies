@@ -29,17 +29,14 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
     {
       initialSize: 1,
       revalidateFirstPage: false,
-    }
+    },
   );
 
   const lastPage = data?.slice(-1)[0];
   const isLoadingInitialData = !data && !error;
   const hasMore = lastPage && lastPage?.page < lastPage?.totalPages;
   const isLoadingMore = !isLoadingInitialData && size > 1 && hasMore;
-  const movies = data?.reduce<Movie[]>(
-    (acc, page) => acc.concat(page.items),
-    []
-  );
+  const movies = data?.reduce<Movie[]>((acc, page) => acc.concat(page.items), []);
 
   if (error)
     return (
@@ -64,9 +61,7 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
         onEndReachedThreshold={0.1}
         onEndReached={() => setSize(size + 1)}
         ListFooterComponent={
-          !isLoadingMore ? null : (
-            <ActivityIndicator color="blue" size="large" />
-          )
+          !isLoadingMore ? null : <ActivityIndicator color="blue" size="large" />
         }
       />
     </View>

@@ -13,8 +13,7 @@ export const MovieCard: React.FC<Movie> = (props) => {
         borderColor: "blue",
         borderRadius: 12,
         overflow: "hidden",
-      }}
-    >
+      }}>
       <Image
         source={{
           uri: props.posterUrl,
@@ -27,15 +26,13 @@ export const MovieCard: React.FC<Movie> = (props) => {
           display: "flex",
           flex: 1,
           padding: 12,
-        }}
-      >
+        }}>
         <Text
           style={{
             marginBottom: 4,
             fontSize: 18,
             fontWeight: "bold",
-          }}
-        >
+          }}>
           {props.title} ({props.date.getUTCFullYear()})
         </Text>
         <Text numberOfLines={5}>{props.overview}</Text>

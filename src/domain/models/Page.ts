@@ -12,7 +12,7 @@ export interface PageDto<T> {
 
 export const pageFromDto = <TDto, TItem>(
   dto: PageDto<TDto>,
-  itemFromDto: (dto: TDto) => TItem
+  itemFromDto: (dto: TDto) => TItem,
 ): Page<TItem> => ({
   page: dto.page,
   items: dto.results.map(itemFromDto),
