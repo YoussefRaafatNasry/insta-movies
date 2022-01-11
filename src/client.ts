@@ -1,9 +1,9 @@
 import axios from "axios";
+import { API_BASE_URL, API_KEY } from "@env";
 
-// TODO: extract environment variables
 export const client = axios.create({
-  baseURL: "https://api.themoviedb.org/3",
+  baseURL: API_BASE_URL,
   params: {
-    api_key: "afd0a8ba089aca0252f77afbac737153",
+    api_key: API_KEY,
   },
 });
