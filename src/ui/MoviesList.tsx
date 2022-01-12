@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Center, FlatList, Spinner, Text } from "native-base";
+import { Box, FlatList, Text } from "native-base";
 import useSWRInfinite from "swr/infinite";
 
 import { Movie } from "../domain/models/Movie";
@@ -40,8 +40,16 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
 
   if (error) return <Text>Failed to load!</Text>;
 
-  // TODO: Use shimmer skeleton
-  if (isLoadingInitialData) return <Spinner />;
+  if (isLoadingInitialData)
+    return (
+      <FlatList
+        horizontal
+        padding={4}
+        data={[...Array(4).keys()]}
+        renderItem={() => <MovieCard />}
+        ItemSeparatorComponent={() => <Box padding={2} />}
+      />
+    );
 
   return (
     <FlatList<Movie>
@@ -51,12 +59,12 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
       ItemSeparatorComponent={() => <Box padding={2} />}
       onEndReachedThreshold={0}
       onEndReached={() => setSize(size + 1)}
-      renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+      renderItem={({ item }) => <MovieCard key={item.id} movie={item} />}
       ListFooterComponent={() => {
         return isLoadingMore ? (
-          <Center padding={8} flex={1}>
-            <Spinner size="lg" />
-          </Center>
+          <Box pl={4} pr={8}>
+            <MovieCard />
+          </Box>
         ) : null;
       }}
     />
