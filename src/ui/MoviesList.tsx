@@ -6,6 +6,7 @@ import useSWRInfinite from "swr/infinite";
 import { Movie } from "../domain/models/Movie";
 import { Page } from "../domain/models/Page";
 import { IMoviesRepository } from "../domain/repositories/MoviesRepository";
+import { PageKeyConverter } from "../util/PageKeyConverter";
 import { MovieCard } from "./MovieCard";
 
 interface IMoviesListProps {
@@ -13,19 +14,17 @@ interface IMoviesListProps {
 }
 
 export const MoviesList: React.FC<IMoviesListProps> = (props) => {
-  const keyPrefix = "movies?page=";
-  const pageToKey = (page: number) => `${keyPrefix}${page}`;
-  const keyToPage = (key: string) => parseInt(key.replace(keyPrefix, ""));
+  const converter = new PageKeyConverter("movies?page=");
 
   const { data, error, size, setSize } = useSWRInfinite(
-    (page: number, previousData: Page<Movie>) => {
-      const nextPage = page + 1;
-      const hasMore = previousData && nextPage > previousData?.totalPages;
-      return hasMore ? null : pageToKey(nextPage);
+    (pageIndex: number, previousPage: Page<Movie>) => {
+      const nextPageIndex = pageIndex + 1;
+      const hasMore = previousPage && previousPage?.totalPages < nextPageIndex;
+      return hasMore ? null : converter.toKey(nextPageIndex);
     },
     (key) => {
-      const page = keyToPage(key);
-      return props.repository.getAll(page);
+      const pageIndex = converter.toIndex(key);
+      return props.repository.getAll(pageIndex);
     },
     {
       initialSize: 1,
