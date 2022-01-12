@@ -1,14 +1,6 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
-import { MoviesRepository } from "./src/domain/repositories/MoviesRepository";
-import { MoviesList } from "./src/ui/MoviesList";
+import { HomeScreen } from "./src/screens/HomeScreen";
 
-const App: React.FC = () => {
-  return (
-    <SafeAreaView>
-      <MoviesList repository={new MoviesRepository()} />
-    </SafeAreaView>
-  );
-};
+const App: React.FC = () => <HomeScreen />;
 
 export default App;

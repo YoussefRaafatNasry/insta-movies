@@ -1,13 +1,18 @@
 import React from "react";
+import { ActivityIndicator, SectionList, Text, View } from "react-native";
 import useSWRInfinite from "swr/infinite";
-
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { Movie } from "../domain/models/Movie";
+import { Page } from "../domain/models/Page";
 import { IMoviesRepository } from "../domain/repositories/MoviesRepository";
 import { MovieCard } from "./MovieCard";
-import { Page } from "../domain/models/Page";
+
+enum Sections {
+  User = "My Movies",
+  All = "All Movies",
+}
 
 interface IMoviesListProps {
+  userMovies: Movie[];
   repository: IMoviesRepository;
 }
 
@@ -55,14 +60,30 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
 
   return (
     <View>
-      <FlatList<Movie>
-        data={movies}
-        renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+      <SectionList<Movie, { key: Sections }>
+        sections={[
+          {
+            key: Sections.User,
+            data: props.userMovies,
+          },
+          {
+            key: Sections.All,
+            data: movies ?? [],
+          },
+        ]}
         onEndReachedThreshold={0.1}
         onEndReached={() => setSize(size + 1)}
-        ListFooterComponent={
-          !isLoadingMore ? null : <ActivityIndicator color="blue" size="large" />
-        }
+        renderSectionHeader={({ section }) => <Text>{section.key}</Text>}
+        renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+        renderSectionFooter={({ section }) => {
+          if (section.data.length === 0) {
+            return <Text>No Content</Text>;
+          } else if (section.key === Sections.All && isLoadingMore) {
+            return <ActivityIndicator color="blue" size="large" />;
+          } else {
+            return null;
+          }
+        }}
       />
     </View>
   );
