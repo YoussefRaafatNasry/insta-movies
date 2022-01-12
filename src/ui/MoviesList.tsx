@@ -1,6 +1,6 @@
 import React from "react";
-import { ActivityIndicator, SectionList, Text, View } from "react-native";
 
+import { Box, Center, FlatList, Spinner, Text } from "native-base";
 import useSWRInfinite from "swr/infinite";
 
 import { Movie } from "../domain/models/Movie";
@@ -8,13 +8,7 @@ import { Page } from "../domain/models/Page";
 import { IMoviesRepository } from "../domain/repositories/MoviesRepository";
 import { MovieCard } from "./MovieCard";
 
-enum Sections {
-  User = "My Movies",
-  All = "All Movies",
-}
-
 interface IMoviesListProps {
-  userMovies: Movie[];
   repository: IMoviesRepository;
 }
 
@@ -45,48 +39,27 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
   const isLoadingMore = !isLoadingInitialData && size > 1 && hasMore;
   const movies = data?.reduce<Movie[]>((acc, page) => acc.concat(page.items), []);
 
-  if (error)
-    return (
-      <View>
-        <Text>Failed to load!</Text>
-      </View>
-    );
+  if (error) return <Text>Failed to load!</Text>;
 
   // TODO: Use shimmer skeleton
-  if (isLoadingInitialData)
-    return (
-      <View>
-        <ActivityIndicator color="blue" size="large" />
-      </View>
-    );
+  if (isLoadingInitialData) return <Spinner />;
 
   return (
-    <View>
-      <SectionList<Movie, { key: Sections }>
-        sections={[
-          {
-            key: Sections.User,
-            data: props.userMovies,
-          },
-          {
-            key: Sections.All,
-            data: movies ?? [],
-          },
-        ]}
-        onEndReachedThreshold={0.1}
-        onEndReached={() => setSize(size + 1)}
-        renderSectionHeader={({ section }) => <Text>{section.key}</Text>}
-        renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
-        renderSectionFooter={({ section }) => {
-          if (section.data.length === 0) {
-            return <Text>No Content</Text>;
-          } else if (section.key === Sections.All && isLoadingMore) {
-            return <ActivityIndicator color="blue" size="large" />;
-          } else {
-            return null;
-          }
-        }}
-      />
-    </View>
+    <FlatList<Movie>
+      horizontal
+      padding={4}
+      data={movies}
+      ItemSeparatorComponent={() => <Box padding={2} />}
+      onEndReachedThreshold={0}
+      onEndReached={() => setSize(size + 1)}
+      renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+      ListFooterComponent={() => {
+        return isLoadingMore ? (
+          <Center padding={8} flex={1}>
+            <Spinner size="lg" />
+          </Center>
+        ) : null;
+      }}
+    />
   );
 };
