@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, Text, View } from "react-native";
+
 import { Movie } from "../domain/models/Movie";
 
 export const MovieCard: React.FC<Movie> = (props) => {

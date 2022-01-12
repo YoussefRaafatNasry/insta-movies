@@ -1,6 +1,8 @@
 import React from "react";
 import { ActivityIndicator, SectionList, Text, View } from "react-native";
+
 import useSWRInfinite from "swr/infinite";
+
 import { Movie } from "../domain/models/Movie";
 import { Page } from "../domain/models/Page";
 import { IMoviesRepository } from "../domain/repositories/MoviesRepository";

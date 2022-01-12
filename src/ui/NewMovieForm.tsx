@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
 import { Button, Image, TextInput, View } from "react-native";
+
+import * as ImagePicker from "expo-image-picker";
+
 import { Movie } from "../domain/models/Movie";
 
 interface INewMovieFormProps {

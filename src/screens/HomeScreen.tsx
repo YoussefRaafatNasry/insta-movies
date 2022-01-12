@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Modal, View, StatusBar, Platform } from "react-native";
+import { Button, Modal, Platform, StatusBar, View } from "react-native";
+
 import { Movie } from "../domain/models/Movie";
 import { MoviesRepository } from "../domain/repositories/MoviesRepository";
 import { MoviesList } from "../ui/MoviesList";
