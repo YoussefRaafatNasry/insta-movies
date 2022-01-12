@@ -13,7 +13,12 @@ export const MovieCard: React.FC<IMovieCardProps> = ({ movie }) => {
   const height = 180;
 
   return movie ? (
-    <VStack width={width} borderWidth="2" borderColor="dark" borderRadius="xl" overflow="hidden">
+    <VStack
+      width={width}
+      borderWidth="2"
+      borderColor="dark"
+      borderRadius="xl"
+      overflow="hidden">
       <ZStack h={height}>
         <Image
           alt={`${movie.title} poster`}

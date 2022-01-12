@@ -48,7 +48,12 @@ export const NewMovieForm: React.FC<INewMovieFormProps> = ({ onMovieAdded }) => 
       </Pressable>
 
       <Input placeholder="Title" value={title} onChangeText={setTitle} />
-      <Input placeholder="Year" value={year} keyboardType="numeric" onChangeText={setYear} />
+      <Input
+        placeholder="Year"
+        value={year}
+        keyboardType="numeric"
+        onChangeText={setYear}
+      />
       <TextArea
         placeholder="Overview"
         value={overView}
