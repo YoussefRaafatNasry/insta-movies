@@ -54,8 +54,9 @@ export const AllMoviesList: React.FC<IAllMoviesListProps> = (props) => {
 
   return (
     <FlatList<Movie>
-      horizontal
       p={4}
+      horizontal
+      showsHorizontalScrollIndicator={false}
       data={movies}
       ItemSeparatorComponent={() => <Box p={2} />}
       onEndReachedThreshold={0}

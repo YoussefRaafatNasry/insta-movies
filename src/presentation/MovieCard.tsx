@@ -29,13 +29,15 @@ export const MovieCard: React.FC<IMovieCardProps> = ({ movie }) => {
             uri: movie.posterUrl,
           }}
         />
-        <Badge colorScheme="primary" m={1} borderRadius="xl">
+        <Badge colorScheme="dark" m={1} borderRadius="xl">
           {movie.date.getUTCFullYear()}
         </Badge>
       </ZStack>
 
       <VStack alignItems="flex-start" space={1} p={3}>
-        <Heading isTruncated>{movie.title}</Heading>
+        <Heading size="md" isTruncated>
+          {movie.title}
+        </Heading>
         <Text numberOfLines={5}>{movie.overview}</Text>
       </VStack>
     </VStack>

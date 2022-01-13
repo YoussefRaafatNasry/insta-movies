@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
-import { Actionsheet, Box, Fab, Heading, Icon, useDisclose } from "native-base";
+import { Actionsheet, Box, Fab, Heading, Icon, View, useDisclose } from "native-base";
 
 import { Movie } from "../domain/models/Movie";
 import { MoviesRepository } from "../domain/repositories/MoviesRepository";
@@ -11,27 +11,24 @@ import { NewMovieForm } from "../presentation/NewMovieForm";
 import { UserMoviesList } from "../presentation/UserMoviesList";
 
 export const HomeScreen: React.FC = () => {
+  const sectionHeight = 420;
   const { isOpen, onOpen, onClose } = useDisclose();
   const [movies, setMovies] = useState<Movie[]>([]);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        position: "relative",
-      }}>
-      <Box flex={1}>
-        <Heading ml={4}>My Movies</Heading>
-        <UserMoviesList movies={movies} />
-      </Box>
-      <Box flex={1}>
-        <Heading ml={4}>All Movies</Heading>
-        <AllMoviesList repository={new MoviesRepository()} />
-      </Box>
+    <View flex={1}>
+      <ScrollView>
+        <Box h={sectionHeight} py={2}>
+          <Heading ml={6}>My Movies</Heading>
+          <UserMoviesList movies={movies} />
+        </Box>
+        <Box h={sectionHeight} py={2}>
+          <Heading ml={6}>All Movies</Heading>
+          <AllMoviesList repository={new MoviesRepository()} />
+        </Box>
+      </ScrollView>
 
       <Fab
-        position="absolute"
-        size="sm"
         icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
         onPress={onOpen}
       />
@@ -46,6 +43,6 @@ export const HomeScreen: React.FC = () => {
           />
         </Actionsheet.Content>
       </Actionsheet>
-    </SafeAreaView>
+    </View>
   );
 };

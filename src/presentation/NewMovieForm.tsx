@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Formik } from "formik";
-import { Button, VStack } from "native-base";
+import { Button, HStack, VStack } from "native-base";
 
 import { ImagePickerField } from "../components/ImagePickerField";
 import { InputField } from "../components/InputField";
@@ -34,12 +34,18 @@ export const NewMovieForm: React.FC<INewMovieFormProps> = ({ onMovieAdded }) => 
         });
       }}>
       {({ handleSubmit }) => (
-        <VStack w="100%" space={2} p={4}>
-          <ImagePickerField name="posterUrl" h={100} w={100} borderRadius={100} />
-          <InputField name="title" placeholder="Title" />
-          <InputField name="year" placeholder="Year" keyboardType="numeric" />
+        <VStack w="100%" space={3} p={4}>
+          <HStack w="100%" space={3} alignItems="center">
+            <ImagePickerField name="posterUrl" w={100} h={100} borderRadius={100} />
+            <VStack flex={1} space={3}>
+              <InputField name="title" placeholder="Title" />
+              <InputField name="year" placeholder="Year" keyboardType="numeric" />
+            </VStack>
+          </HStack>
           <TextAreaField name="overview" placeholder="Overview" numberOfLines={5} />
-          <Button onPress={() => handleSubmit()}>Add Movie</Button>
+          <Button size="lg" onPress={() => handleSubmit()}>
+            Add Movie
+          </Button>
         </VStack>
       )}
     </Formik>
