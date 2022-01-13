@@ -20,7 +20,7 @@ export const UserMoviesList: React.FC<IUserMoviesListProps> = (props) => {
       padding={4}
       data={props.movies}
       ItemSeparatorComponent={() => <Box padding={2} />}
-      renderItem={({ item }) => <MovieCard key={item.id} {...item} />}
+      renderItem={({ item }) => <MovieCard key={item.id} movie={item} />}
     />
   );
 };

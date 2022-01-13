@@ -1,77 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { AntDesign } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import { Button, Center, Image, Input, Pressable, TextArea, VStack } from "native-base";
+import { Formik } from "formik";
+import { Button, VStack } from "native-base";
 
+import { ImagePickerField } from "../components/ImagePickerField";
+import { InputField } from "../components/InputField";
+import { TextAreaField } from "../components/TextAreaField";
 import { Movie } from "../domain/models/Movie";
 
 interface INewMovieFormProps {
   onMovieAdded: (movie: Movie) => void;
 }
 
+interface IMovieInputs extends Omit<Movie, "id" | "date"> {
+  year: string;
+}
+
 export const NewMovieForm: React.FC<INewMovieFormProps> = ({ onMovieAdded }) => {
-  const [title, setTitle] = useState("");
-  const [year, setYear] = useState("");
-  const [overView, setOverview] = useState("");
-  const [poster, setPoster] = useState<string>("");
-
-  const options: ImagePicker.ImagePickerOptions = {
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  };
-
-  // TODO: Use Formik
   return (
-    <VStack space={2} w="100%" p={4}>
-      <Pressable
-        onPress={async () => {
-          const result = await ImagePicker.launchImageLibraryAsync(options);
-          if (result.cancelled) return;
-          setPoster(result?.uri);
-        }}>
-        <Center height={100} width={100} borderRadius={100} bg="gray.200">
-          {poster === "" ? (
-            <AntDesign name="camera" size={32} />
-          ) : (
-            <Image
-              key={poster}
-              height={100}
-              width={100}
-              borderRadius={100}
-              alt="Poster"
-              source={{
-                uri: poster,
-              }}
-            />
-          )}
-        </Center>
-      </Pressable>
-
-      <Input placeholder="Title" value={title} onChangeText={setTitle} />
-      <Input
-        placeholder="Year"
-        value={year}
-        keyboardType="numeric"
-        onChangeText={setYear}
-      />
-      <TextArea
-        placeholder="Overview"
-        value={overView}
-        onChangeText={setOverview}
-        numberOfLines={5}
-      />
-      <Button
-        onPress={() =>
-          onMovieAdded({
-            id: Date.now(),
-            title: title,
-            date: new Date(parseInt(year), 1),
-            overview: overView,
-            posterUrl: poster,
-          })
-        }>
-        Add Movie
-      </Button>
-    </VStack>
+    <Formik<IMovieInputs>
+      initialValues={{
+        title: "",
+        overview: "",
+        year: "",
+        posterUrl: "",
+      }}
+      onSubmit={({ year, ...values }) => {
+        // TODO: Add Validation
+        onMovieAdded({
+          ...values,
+          id: Date.now(),
+          date: new Date(parseInt(year), 1),
+        });
+      }}>
+      {({ handleSubmit }) => (
+        <VStack w="100%" space={2} p={4}>
+          <ImagePickerField name="posterUrl" h={100} w={100} borderRadius={100} />
+          <InputField name="title" placeholder="Title" />
+          <InputField name="year" placeholder="Year" keyboardType="numeric" />
+          <TextAreaField name="overview" placeholder="Overview" numberOfLines={5} />
+          <Button onPress={() => handleSubmit()}>Add Movie</Button>
+        </VStack>
+      )}
+    </Formik>
   );
 };
