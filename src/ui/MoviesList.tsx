@@ -47,6 +47,7 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
         padding={4}
         data={[...Array(4).keys()]}
         renderItem={() => <MovieCard />}
+        keyExtractor={(item) => `movie-placeholder-${item}`}
         ItemSeparatorComponent={() => <Box padding={2} />}
       />
     );
