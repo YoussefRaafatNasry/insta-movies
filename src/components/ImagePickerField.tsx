@@ -23,11 +23,7 @@ export const ImagePickerField: React.FC<IImagePickerFieldProps> = (props) => {
           if (result.cancelled) return;
           setValue(result?.uri);
         }}>
-        <Center
-          height={props.h}
-          width={props.w}
-          borderRadius={props.borderRadius}
-          bg="gray.200">
+        <Center w={props.w} h={props.h} borderRadius={props.borderRadius} bg="gray.200">
           {value === "" ? (
             <AntDesign name="camera" size={32} />
           ) : (

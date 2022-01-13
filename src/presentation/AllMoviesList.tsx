@@ -9,11 +9,11 @@ import { IMoviesRepository } from "../domain/repositories/MoviesRepository";
 import { PageKeyConverter } from "../util/PageKeyConverter";
 import { MovieCard } from "./MovieCard";
 
-interface IMoviesListProps {
+interface IAllMoviesListProps {
   repository: IMoviesRepository;
 }
 
-export const MoviesList: React.FC<IMoviesListProps> = (props) => {
+export const AllMoviesList: React.FC<IAllMoviesListProps> = (props) => {
   const converter = new PageKeyConverter("movies?page=");
 
   const { data, error, size, setSize } = useSWRInfinite(
@@ -44,20 +44,20 @@ export const MoviesList: React.FC<IMoviesListProps> = (props) => {
     return (
       <FlatList
         horizontal
-        padding={4}
+        p={4}
         data={[...Array(4).keys()]}
         renderItem={() => <MovieCard />}
         keyExtractor={(item) => `movie-placeholder-${item}`}
-        ItemSeparatorComponent={() => <Box padding={2} />}
+        ItemSeparatorComponent={() => <Box p={2} />}
       />
     );
 
   return (
     <FlatList<Movie>
       horizontal
-      padding={4}
+      p={4}
       data={movies}
-      ItemSeparatorComponent={() => <Box padding={2} />}
+      ItemSeparatorComponent={() => <Box p={2} />}
       onEndReachedThreshold={0}
       onEndReached={() => setSize(size + 1)}
       renderItem={({ item }) => <MovieCard key={item.id} movie={item} />}

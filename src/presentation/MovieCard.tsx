@@ -14,7 +14,7 @@ export const MovieCard: React.FC<IMovieCardProps> = ({ movie }) => {
 
   return movie ? (
     <VStack
-      width={width}
+      w={width}
       borderWidth="2"
       borderColor="dark"
       borderRadius="xl"
@@ -22,8 +22,8 @@ export const MovieCard: React.FC<IMovieCardProps> = ({ movie }) => {
       <ZStack h={height}>
         <Image
           alt={`${movie.title} poster`}
-          height={height}
-          width={width}
+          w={width}
+          h={height}
           fallbackSource={require("../../assets/poster-placeholder.png")}
           source={{
             uri: movie.posterUrl,
@@ -34,27 +34,27 @@ export const MovieCard: React.FC<IMovieCardProps> = ({ movie }) => {
         </Badge>
       </ZStack>
 
-      <VStack alignItems="flex-start" space={1} padding={3}>
+      <VStack alignItems="flex-start" space={1} p={3}>
         <Heading isTruncated>{movie.title}</Heading>
         <Text numberOfLines={5}>{movie.overview}</Text>
       </VStack>
     </VStack>
   ) : (
     <VStack
+      w={width}
       h="100%"
-      width={width}
       borderWidth="2"
       borderColor="gray.200"
       borderRadius="xl"
       overflow="hidden">
-      <Skeleton height={height} />
-      <VStack space={1} padding={3}>
-        <Skeleton height="6" mb="2" />
-        <Skeleton height="3" />
-        <Skeleton height="3" />
-        <Skeleton height="3" />
-        <Skeleton height="3" />
-        <Skeleton height="3" />
+      <Skeleton h={height} />
+      <VStack space={1} p={3}>
+        <Skeleton h="6" mb="2" />
+        <Skeleton h="3" />
+        <Skeleton h="3" />
+        <Skeleton h="3" />
+        <Skeleton h="3" />
+        <Skeleton h="3" />
       </VStack>
     </VStack>
   );

@@ -17,9 +17,9 @@ export const UserMoviesList: React.FC<IUserMoviesListProps> = (props) => {
   ) : (
     <FlatList<Movie>
       horizontal
-      padding={4}
+      p={4}
       data={props.movies}
-      ItemSeparatorComponent={() => <Box padding={2} />}
+      ItemSeparatorComponent={() => <Box p={2} />}
       renderItem={({ item }) => <MovieCard key={item.id} movie={item} />}
     />
   );
