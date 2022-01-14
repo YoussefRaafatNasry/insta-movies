@@ -10,16 +10,17 @@ interface IImagePickerFieldProps extends IImageProps {
 }
 
 export const ImagePickerField: React.FC<IImagePickerFieldProps> = (props) => {
-  const [{ value }, { error }, { setValue }] = useField(props.name);
+  const [{ value }, { error, touched }, { setValue, setTouched }] = useField(props.name);
 
   return (
-    <FormControl {...props} isInvalid={!!error}>
+    <FormControl {...props} isInvalid={touched && !!error}>
       <Pressable
         onPress={async () => {
           const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
           });
 
+          setTouched(true);
           if (result.cancelled) return;
           setValue(result?.uri);
         }}>

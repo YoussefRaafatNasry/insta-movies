@@ -8,11 +8,11 @@ interface ITextAreaFieldProps extends ITextAreaProps {
 }
 
 export const TextAreaField: React.FC<ITextAreaFieldProps> = (props) => {
-  const [{ value }, { error }, { setValue }] = useField(props.name);
+  const [field, { error, touched }, { setValue }] = useField(props.name);
 
   return (
-    <FormControl {...props} isInvalid={!!error}>
-      <TextArea {...props} value={value} onChangeText={setValue} />
+    <FormControl {...props} isInvalid={touched && !!error}>
+      <TextArea {...props} {...field} onChangeText={setValue} />
       <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
     </FormControl>
   );
