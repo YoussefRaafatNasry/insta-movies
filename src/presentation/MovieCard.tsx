@@ -24,10 +24,13 @@ export const MovieCard: React.FC<IMovieCardProps> = ({ movie }) => {
           alt={`${movie.title} poster`}
           w={width}
           h={height}
-          fallbackSource={require("../../assets/poster-placeholder.png")}
-          source={{
-            uri: movie.posterUrl,
-          }}
+          source={
+            movie.posterUrl
+              ? {
+                  uri: movie.posterUrl,
+                }
+              : require("../../assets/poster-placeholder.png")
+          }
         />
         <Badge colorScheme="dark" m={1} borderRadius="xl">
           {movie.date.getUTCFullYear()}

@@ -1,6 +1,7 @@
 module.exports = {
   preset: "jest-expo",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  setupFiles: ["./src/test/setup.ts"],
   transformIgnorePatterns: [
     `node_modules/(?!(${[
       "(jest-)?react-native",
