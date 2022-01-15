@@ -10,14 +10,14 @@ import { TextAreaField } from "../components/TextAreaField";
 import { Movie } from "../domain/models/Movie";
 
 interface INewMovieFormProps {
-  onMovieAdded: (movie: Movie) => void;
+  onMovieSubmit: (movie: Movie) => void;
 }
 
 interface IMovieInputs extends Omit<Movie, "id" | "date"> {
   year: string;
 }
 
-export const NewMovieForm: React.FC<INewMovieFormProps> = ({ onMovieAdded }) => {
+export const NewMovieForm: React.FC<INewMovieFormProps> = ({ onMovieSubmit }) => {
   const schema: Yup.SchemaOf<IMovieInputs> = Yup.object({
     title: Yup.string().required("Required").label("Title"),
     overview: Yup.string().required("Required").label("Overview"),
@@ -40,8 +40,7 @@ export const NewMovieForm: React.FC<INewMovieFormProps> = ({ onMovieAdded }) => 
       validateOnBlur
       validationSchema={schema}
       onSubmit={({ year, ...values }) => {
-        // TODO: Add Validation
-        onMovieAdded({
+        onMovieSubmit({
           ...values,
           id: Date.now(),
           date: new Date(parseInt(year), 1),

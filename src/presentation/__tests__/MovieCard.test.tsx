@@ -2,17 +2,23 @@ import React from "react";
 
 import { Image, Skeleton } from "native-base";
 
-import { create } from "../test/utils";
-import { MovieCard } from "./MovieCard";
+import { create } from "../../test/utils";
+import { MovieCard } from "../MovieCard";
 
 describe("<MovieCard />", () => {
   it("renders skeletons when no movie provided", () => {
+    // Arrange
     const tree = create(<MovieCard />);
+
+    // Act
     const skeletons = tree.root.findAllByType(Skeleton);
+
+    // Assert
     expect(skeletons.length).toBe(7);
   });
 
   it("renders placeholder image when no image provided", () => {
+    // Arrange
     const tree = create(
       <MovieCard
         movie={{
@@ -23,8 +29,12 @@ describe("<MovieCard />", () => {
         }}
       />,
     );
+
+    // Act
     const image = tree.root.findByType(Image);
     const uri = image.props.source;
+
+    // Assert
     expect(typeof uri).toBe("number");
   });
 });

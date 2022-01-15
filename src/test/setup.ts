@@ -1,2 +1,5 @@
-jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
+// Config
 jest.useFakeTimers();
+
+// Mock
+jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");

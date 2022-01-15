@@ -10,6 +10,9 @@ import { AllMoviesList } from "../presentation/AllMoviesList";
 import { NewMovieForm } from "../presentation/NewMovieForm";
 import { UserMoviesList } from "../presentation/UserMoviesList";
 
+// TODO: use service locator
+const moviesRepository = new MoviesRepository();
+
 export const HomeScreen: React.FC = () => {
   const sectionHeight = 420;
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -24,7 +27,7 @@ export const HomeScreen: React.FC = () => {
         </Box>
         <Box h={sectionHeight} py={2}>
           <Heading ml={6}>All Movies</Heading>
-          <AllMoviesList repository={new MoviesRepository()} />
+          <AllMoviesList repository={moviesRepository} />
         </Box>
       </ScrollView>
 
@@ -36,7 +39,7 @@ export const HomeScreen: React.FC = () => {
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
           <NewMovieForm
-            onMovieAdded={(movie) => {
+            onMovieSubmit={(movie) => {
               setMovies((previous) => [movie, ...previous]);
               onClose();
             }}
