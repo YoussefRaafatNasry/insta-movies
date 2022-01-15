@@ -8,11 +8,16 @@ interface IInputFieldProps extends IInputProps {
 }
 
 export const InputField: React.FC<IInputFieldProps> = (props) => {
-  const [field, { error, touched }, { setValue }] = useField(props.name);
+  const [field, { error, touched }, { setValue, setTouched }] = useField(props.name);
 
   return (
     <FormControl {...props} isInvalid={touched && !!error}>
-      <Input {...props} {...field} onChangeText={setValue} />
+      <Input
+        {...props}
+        value={field.value}
+        onChangeText={setValue}
+        onBlur={() => setTouched(true)}
+      />
       <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
     </FormControl>
   );
